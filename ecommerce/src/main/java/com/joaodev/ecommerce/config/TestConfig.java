@@ -7,9 +7,13 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
 
 import com.joaodev.ecommerce.entities.Category;
+import com.joaodev.ecommerce.entities.City;
 import com.joaodev.ecommerce.entities.Product;
+import com.joaodev.ecommerce.entities.State;
 import com.joaodev.ecommerce.repositories.CategoryRepository;
+import com.joaodev.ecommerce.repositories.CityRepository;
 import com.joaodev.ecommerce.repositories.ProductRepository;
+import com.joaodev.ecommerce.repositories.StateRepository;
 
 @Configuration
 public class TestConfig implements CommandLineRunner {
@@ -19,6 +23,12 @@ public class TestConfig implements CommandLineRunner {
 
     @Autowired
     private ProductRepository productRepository;
+
+    @Autowired
+    private CityRepository cityRepository;
+
+    @Autowired
+    private StateRepository stateRepository;
 
     @Override
     public void run(String... args) throws Exception {
@@ -40,5 +50,22 @@ public class TestConfig implements CommandLineRunner {
         p3.getCategories().add(cat1);
 
         productRepository.saveAll(Arrays.asList(p1, p2, p3));
+
+
+        State est1 = new State(null, "Minas Gerais");
+        State est2 = new State(null, "São Paulo");
+
+        stateRepository.saveAll(Arrays.asList(est1, est2));
+
+        City c1 = new City(null, "Uberlândia", est1);
+        City c2 = new City(null, "São Paulo", est2);
+        City c3 = new City(null, "Campinas", est2);
+
+        est1.getCities().add(c1);
+        est2.getCities().add(c2);
+        est2.getCities().add(c3);
+
+        cityRepository.saveAll(Arrays.asList(c1, c2, c3));
+
     }
 }
