@@ -29,6 +29,7 @@ O desenvolvimento deste projeto baseou-se nas seguintes tecnologias:
 ## 📖 Modelo de Domínio (UML)
 
 [cite_start]O design do sistema foi **inteiramente baseado** no seguinte Diagrama de Classes UML , que define as entidades e seus complexos relacionamentos. Esta modelagem foi a primeira etapa crucial do projeto.
+<img width="1328" height="692" alt="ModeloUMLfinalizado" src="https://github.com/user-attachments/assets/39f26d28-18e9-4ff6-8d4b-ef5db1e9d170" />
 
 ![Modelo de Domínio UML](caminho/para/sua/imagem/ModeloUMLfinalizado.png)
 
