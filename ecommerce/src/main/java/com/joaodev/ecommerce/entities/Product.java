@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -24,6 +26,7 @@ public class Product implements Serializable {
     private String name;
     private Double price;
 
+    @JsonIgnore
     @ManyToMany
     @JoinTable(name = "tb_product_categories",
     joinColumns = @JoinColumn(name ="product_id"),
