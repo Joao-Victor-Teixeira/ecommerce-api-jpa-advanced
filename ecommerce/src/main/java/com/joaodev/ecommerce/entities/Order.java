@@ -5,9 +5,9 @@ import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.springframework.data.annotation.Id;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -25,7 +25,7 @@ import jakarta.persistence.Table;
 public class Order implements Serializable {
     private static final long serialVersionUID = 1L;
     
-    @Id
+    @jakarta.persistence.Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
@@ -49,10 +49,9 @@ public class Order implements Serializable {
     public Order(){
     }
 
-    public Order(Long id, Instant instant, Payment payment, Client client, Adress deliveryAdress) {
+    public Order(Long id, Instant instant, Client client, Adress deliveryAdress) {
         this.id = id;
         this.instant = instant;
-        this.payment = payment;
         this.client = client;
         this.deliveryAdress = deliveryAdress;
     }

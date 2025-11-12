@@ -1,5 +1,6 @@
 package com.joaodev.ecommerce.config;
 
+import java.time.Instant;
 import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,16 +8,25 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
 
 import com.joaodev.ecommerce.entities.Adress;
+import com.joaodev.ecommerce.entities.CardPayment;
 import com.joaodev.ecommerce.entities.Category;
 import com.joaodev.ecommerce.entities.City;
 import com.joaodev.ecommerce.entities.Client;
+import com.joaodev.ecommerce.entities.Order;
+import com.joaodev.ecommerce.entities.OrderItem;
+import com.joaodev.ecommerce.entities.Payment;
+import com.joaodev.ecommerce.entities.PaymentBankSlip;
 import com.joaodev.ecommerce.entities.Product;
 import com.joaodev.ecommerce.entities.State;
 import com.joaodev.ecommerce.entities.enums.ClientType;
+import com.joaodev.ecommerce.entities.enums.PaymentStatus;
 import com.joaodev.ecommerce.repositories.AdressRepository;
 import com.joaodev.ecommerce.repositories.CategoryRepository;
 import com.joaodev.ecommerce.repositories.CityRepository;
 import com.joaodev.ecommerce.repositories.ClientRepository;
+import com.joaodev.ecommerce.repositories.OrderItemRepository;
+import com.joaodev.ecommerce.repositories.OrderRepository;
+import com.joaodev.ecommerce.repositories.PaymentRepository;
 import com.joaodev.ecommerce.repositories.ProductRepository;
 import com.joaodev.ecommerce.repositories.StateRepository;
 
@@ -40,6 +50,12 @@ public class TestConfig implements CommandLineRunner {
 
     @Autowired
     private AdressRepository adressRepository;
+
+    @Autowired OrderRepository orderRepository;
+
+    @Autowired PaymentRepository paymentRepository;
+
+    @Autowired OrderItemRepository orderItemRepository;
 
     @Override
     public void run(String... args) throws Exception {
@@ -89,5 +105,36 @@ public class TestConfig implements CommandLineRunner {
 
         clientRepository.saveAll(Arrays.asList(cli1));
         adressRepository.saveAll(Arrays.asList(a1, a2));
+
+       Order o1 = new Order(null, Instant.parse("2019-06-20T19:53:07Z"), cli1, a1);
+       Order o2 = new Order(null, Instant.parse("2019-07-21T03:42:10Z"), cli1, a2);
+
+       Payment pay1 = new CardPayment(null, PaymentStatus.PAID, o1, 6);
+       o1.setPayment(pay1);
+
+       Payment pay2 = new PaymentBankSlip(null, PaymentStatus.PENDING, o2, Instant.parse("2019-08-12T00:00:00Z"), null);
+       o2.setPayment(pay2);
+
+       cli1.getOrders().add(o1);
+       cli1.getOrders().add(o2);
+
+       orderRepository.saveAll(Arrays.asList(o1, o2));
+
+       paymentRepository.saveAll(Arrays.asList(pay1, pay2));
+
+       OrderItem oi1 = new OrderItem(o1, p1, 0.00, 1, 2000.00);
+       OrderItem oi2 = new OrderItem(o1, p3, 0.00, 2, 80.00);
+       OrderItem oi3 = new OrderItem(o2, p2, 100.00, 1, 800.00);
+
+       o1.getIntems().add(oi1);
+       o1.getIntems().add(oi2);
+
+       o2.getIntems().add(oi3);
+
+       p1.getItems().addAll(Arrays.asList(oi1));
+       p2.getItems().addAll(Arrays.asList(oi3));
+       p3.getItems().addAll(Arrays.asList(oi2));
+
+       orderItemRepository.saveAll(Arrays.asList(oi1, oi2, oi3));
     }
 }

@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.joaodev.ecommerce.entities.enums.ClientType;
 
 import jakarta.persistence.CollectionTable;
@@ -34,6 +35,10 @@ public class Client implements Serializable {
     @ElementCollection
     @CollectionTable(name = "telephone")
     private Set<String> telephones = new HashSet<>();
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "client")
+    private List<Order> orders = new ArrayList<>();
 
     public Client(){
     }
@@ -102,6 +107,14 @@ public class Client implements Serializable {
 
     public void setTelephones(Set<String> telephones){
         this.telephones = telephones;
+    }
+
+    public List<Order> getOrders(){
+        return orders;
+    }
+
+    public void setOrders(List<Order> orders){
+        this.orders = orders;
     }
 
     @Override
