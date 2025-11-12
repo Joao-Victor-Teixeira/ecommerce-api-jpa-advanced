@@ -6,12 +6,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
 
+import com.joaodev.ecommerce.entities.Adress;
 import com.joaodev.ecommerce.entities.Category;
 import com.joaodev.ecommerce.entities.City;
+import com.joaodev.ecommerce.entities.Client;
 import com.joaodev.ecommerce.entities.Product;
 import com.joaodev.ecommerce.entities.State;
+import com.joaodev.ecommerce.entities.enums.ClientType;
+import com.joaodev.ecommerce.repositories.AdressRepository;
 import com.joaodev.ecommerce.repositories.CategoryRepository;
 import com.joaodev.ecommerce.repositories.CityRepository;
+import com.joaodev.ecommerce.repositories.ClientRepository;
 import com.joaodev.ecommerce.repositories.ProductRepository;
 import com.joaodev.ecommerce.repositories.StateRepository;
 
@@ -29,6 +34,12 @@ public class TestConfig implements CommandLineRunner {
 
     @Autowired
     private StateRepository stateRepository;
+
+    @Autowired
+    private ClientRepository clientRepository;
+
+    @Autowired
+    private AdressRepository adressRepository;
 
     @Override
     public void run(String... args) throws Exception {
@@ -67,5 +78,16 @@ public class TestConfig implements CommandLineRunner {
 
         cityRepository.saveAll(Arrays.asList(c1, c2, c3));
 
+        Client cli1 = new Client(null, "Maria Silva", "maria@gmail.com", "36378912377", ClientType.INDIVIDUAL);
+        cli1.getTelephones().addAll(Arrays.asList("27363323", "93838393"));
+
+        Adress a1 = new Adress(null, "Rua Flores", "300", "Apto 303", "Jardim", "38220834", cli1, c1);
+        Adress a2 = new Adress(null, "Av Matos", "105", "Sala 800", "Centro", "38777012", cli1, c2);
+
+        cli1.getAdresses().add(a1);
+        cli1.getAdresses().add(a2);
+
+        clientRepository.saveAll(Arrays.asList(cli1));
+        adressRepository.saveAll(Arrays.asList(a1, a2));
     }
 }
